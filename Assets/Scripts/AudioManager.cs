@@ -96,13 +96,27 @@ public class AudioManager : MonoBehaviour
 
     void Shuffle()
     {
+        if (playlist.Count == 0)
+        {
+            Debug.LogError("Error: playlist is empty. Cannot shuffle!");
+            return;
+        }
+            
+
+        if(playlist.Count == 1)
+        {
+            Debug.LogWarning("Warning: playlist only has one song. Shuffle will replay same song.");
+            playlistIndex = 0;
+            PlayCurrentSongInPlaylist();
+        }
+
         int tempPlaylistIndex = playlistIndex;
         while(tempPlaylistIndex == playlistIndex)
         {
             tempPlaylistIndex = Random.Range(0, playlist.Count);
         }
         playlistIndex = tempPlaylistIndex;
-        AudioManager.Instance.PlayMusic(playlist[playlistIndex], AudioManager.FadeType.FadeIn, 1f);
+        PlayCurrentSongInPlaylist();
     }
 
     void PlayCurrentSongInPlaylist()
