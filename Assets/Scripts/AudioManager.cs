@@ -119,6 +119,12 @@ public class AudioManager : MonoBehaviour
         PlayCurrentSongInPlaylist();
     }
 
+    void Skip(int songsToSkip)
+    {
+        playlistIndex = (playlistIndex + songsToSkip) % playlist.Count;
+        PlayCurrentSongInPlaylist();
+    }
+
     void PlayCurrentSongInPlaylist()
     {
         AudioManager.Instance.PlayMusic(playlist[playlistIndex], AudioManager.FadeType.FadeIn, 1f);
