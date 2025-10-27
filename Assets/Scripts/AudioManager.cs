@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class AudioManager : MonoBehaviour
     public AudioSource sfxSource;
     public AudioSource fadeSource;
     private Coroutine currentCoroutine;
+    public AudioMixer audioMixer;
+    private float currentSpeed = 1f;
 
     [Header("UI")]
     public AudioClip buttonPressClip;
@@ -61,6 +64,8 @@ public class AudioManager : MonoBehaviour
         WarmMusicCache();
 
         PlayCurrentSongInPlaylist();
+
+        musicSource.outputAudioMixerGroup = audioMixer.FindMatchingGroups("Master")[0];
     }
 
     void WarmMusicCache()
@@ -225,6 +230,17 @@ public class AudioManager : MonoBehaviour
         {
             source.Stop();
         }
+    }
+
+    public void SetPlaybackSpeed(float speed, AudioSource source)
+    {
+        currentSpeed = Mathf.Clamp(speed, 0.5f, 2f);
+
+        source.pitch = currentSpeed;
+
+        float semitoneOffset = Mathf.Log(currentSpeed, 2f) * 12f;
+
+        audioMixer.SetFloat("Pitch", -semitoneOffset);
     }
 
     //==================== Interaction ====================
