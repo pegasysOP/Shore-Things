@@ -1,13 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
+    [Header("Internals")]
     public AudioSource musicSource;
     public AudioSource sfxSource;
     public AudioSource fadeSource;
-    public AudioSource metalDetectorSource;
+    private Coroutine currentCoroutine;
+    public AudioMixer audioMixer;
+    private float currentSpeed = 1f;
 
     [Header("UI")]
     public AudioClip buttonPressClip;
@@ -35,9 +39,11 @@ public class AudioManager : MonoBehaviour
     public AudioClip jazzSongClip;
     public AudioClip americanaSongClip;
 
-    public static AudioManager Instance;
+    [Header("Playlist")]
+    private List<AudioClip> playlist;
+    private int playlistIndex = 0;
 
-    private Coroutine currentCoroutine;
+    public static AudioManager Instance;
 
     private float remainingDuckTime = 0f;
 
@@ -53,8 +59,18 @@ public class AudioManager : MonoBehaviour
         UpdateVolume(SettingsUtils.GetMasterVolume());
         Play(sfxSource, waveClip);
 
-        AudioClip[] clipsToWarm = { hawiiSongClip, jazzSongClip, americanaSongClip };
-        foreach (AudioClip clip in clipsToWarm)
+        CreatePlaylist();
+
+        WarmMusicCache();
+
+        PlayCurrentSongInPlaylist();
+
+        musicSource.outputAudioMixerGroup = audioMixer.FindMatchingGroups("Master")[0];
+    }
+
+    void WarmMusicCache()
+    {
+        foreach (AudioClip clip in playlist)
         {
             if (clip != null && musicSource != null)
             {
@@ -63,6 +79,75 @@ public class AudioManager : MonoBehaviour
                 musicSource.Stop();
             }
         }
+    }
+
+    //==================== Playlist ===================
+    
+    void CreatePlaylist()
+    {
+        playlist = new List<AudioClip>()
+        {
+            hawiiSongClip,
+            jazzSongClip,
+            americanaSongClip
+        };
+    }
+
+    void AdvanceSong()
+    {
+        playlistIndex = (playlistIndex + 1) % playlist.Count;
+        PlayCurrentSongInPlaylist();
+    }
+
+    void Shuffle()
+    {
+        if (playlist.Count == 0)
+        {
+            Debug.LogError("Error: playlist is empty. Cannot shuffle!");
+            return;
+        }
+            
+
+        if(playlist.Count == 1)
+        {
+            Debug.LogWarning("Warning: playlist only has one song. Shuffle will replay same song.");
+            playlistIndex = 0;
+            PlayCurrentSongInPlaylist();
+        }
+
+        int tempPlaylistIndex = playlistIndex;
+        while(tempPlaylistIndex == playlistIndex)
+        {
+            tempPlaylistIndex = Random.Range(0, playlist.Count);
+        }
+        playlistIndex = tempPlaylistIndex;
+        PlayCurrentSongInPlaylist();
+    }
+
+    void Skip(int songsToSkip)
+    {
+        playlistIndex = (playlistIndex + songsToSkip) % playlist.Count;
+        PlayCurrentSongInPlaylist();
+    }
+
+    void PlayCurrentSongInPlaylist()
+    {
+        AudioManager.Instance.PlayMusic(playlist[playlistIndex], AudioManager.FadeType.FadeIn, 1f);
+    }
+
+    void StopPlaylist()
+    {
+        AudioManager.Instance.Stop(musicSource, true);
+    }
+
+    void PausePlaylist()
+    {
+        AudioManager.Instance.musicSource.Pause();
+    }
+
+    void UnpausePlaylist()
+    {
+        AudioManager.Instance.musicSource.UnPause();
     }
 
     //==================== Utility ====================
@@ -119,6 +204,11 @@ public class AudioManager : MonoBehaviour
             PlaySeagullClip();
             seagullTimer = Random.Range(seagullDelay, seagullDelay * 2f);
         }
+
+        if (!musicSource.isPlaying)
+        {
+            AdvanceSong();
+        }
     }
 
     public void PlaySeagullClip()
@@ -142,6 +232,17 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    public void SetPlaybackSpeed(float speed, AudioSource source)
+    {
+        currentSpeed = Mathf.Clamp(speed, 0.5f, 2f);
+
+        source.pitch = currentSpeed;
+
+        float semitoneOffset = Mathf.Log(currentSpeed, 2f) * 12f;
+
+        audioMixer.SetFloat("Pitch", -semitoneOffset);
+    }
+
     //==================== Interaction ====================
 
     public void PlaySfxWithPitchShifting(List<AudioClip> clips, float minPitch = 0.8f, float maxPitch = 1.2f)
@@ -162,7 +263,6 @@ public class AudioManager : MonoBehaviour
         musicSource.volume = value / 3;
         fadeSource.volume = value / 3;
         sfxSource.volume = value / 3;
-        metalDetectorSource.volume = value;
     }
 
     public void UpdateSfxVolume(float value)

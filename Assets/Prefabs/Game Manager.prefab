@@ -71,6 +71,8 @@ MonoBehaviour:
   musicSource: {fileID: 6189494663581875946}
   sfxSource: {fileID: 95141286619121530}
   fadeSource: {fileID: 6189494663581875946}
+  audioMixerGroup: {fileID: 0}
+  audioMixer: {fileID: 24100000, guid: d99d57ad0a890654e884a37e9456af7c, type: 2}
   buttonPressClip: {fileID: 0}
   buttonHoverClip: {fileID: 0}
   pauseMenuOpenClip: {fileID: 0}
