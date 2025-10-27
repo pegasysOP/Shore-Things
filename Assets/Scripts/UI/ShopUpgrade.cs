@@ -47,8 +47,8 @@ public class ShopUpgrade : MonoBehaviour
         if (GameManager.Instance.inventory.GetMoney() < upgradeData.cost)
             return;
 
-        onUpgrade?.Invoke(upgradeData);
+        AudioManager.Instance.PlaySfx(AudioManager.Instance.coinClips);
 
-        //GameManager.Instance.inventory.DeductMoney(upgradeData.cost); // TODO: use shop buy method and check money first
+        onUpgrade?.Invoke(upgradeData);
     }
 }

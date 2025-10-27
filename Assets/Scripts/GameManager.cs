@@ -62,7 +62,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (keyboard.escapeKey.wasPressedThisFrame)
+        if (keyboard.tabKey.wasPressedThisFrame)
         {
             hudController.pauseMenu.Toggle();
         }

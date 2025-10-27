@@ -933,10 +933,6 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 11
       objectReference: {fileID: 0}
-    - target: {fileID: 3675229333307416687, guid: 7071210b99b3bc14c918a1782f63a0a1, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -21.925
-      objectReference: {fileID: 0}
     - target: {fileID: 4444104183089674743, guid: 7071210b99b3bc14c918a1782f63a0a1, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -2378,11 +2374,6 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: 592739438738594241, guid: 17928bc0c7d0f634a877301ca1e63ff1, type: 3}
   m_PrefabInstance: {fileID: 1062163156}
-  m_PrefabAsset: {fileID: 0}
---- !u!82 &913660641 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 8502412615164602493, guid: fd7b04d50cc5d9842bb77ce3ff67b8f8, type: 3}
-  m_PrefabInstance: {fileID: 1609370226}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &914516548
 PrefabInstance:
@@ -4679,10 +4670,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Game Manager
       objectReference: {fileID: 0}
-    - target: {fileID: 5786254294602685839, guid: 2588910add1eda14fb3990c1ee7ff1aa, type: 3}
-      propertyPath: metalDetectorSource
-      value: 
-      objectReference: {fileID: 913660641}
     - target: {fileID: 8604299526140403365, guid: 2588910add1eda14fb3990c1ee7ff1aa, type: 3}
       propertyPath: hudController
       value: 

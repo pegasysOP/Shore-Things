@@ -46,7 +46,11 @@ public class MetalDetector : MonoBehaviour
         beepTimer += Time.deltaTime;
 
         if (GameManager.Instance.LOCKED)
+        {
+            RechargeBatteryOverTime();
             return;
+        }
+            
 
         if (mouse.rightButton.isPressed)
         {
