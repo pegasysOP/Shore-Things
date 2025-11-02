@@ -11,7 +11,8 @@ public enum Upgrade
     GoldDetector,
     HeartbeatSensor,
     Fossils,
-    AlienTech
+    AlienTech,
+    Roomba
 }
 
 public struct UpgradeData
