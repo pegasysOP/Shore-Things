@@ -40,9 +40,7 @@ public class GameManager : MonoBehaviour
 
         CreateUpgrades();
         
-        hudController.UpdateMoneyText(inventory.GetMoney());
-        hudController.UpdateBatteryText(metalDetector.maxBattery);
-        hudController.UpdateInventory();
+        UpdateUI();
 
         SetLocked(false);
     }
@@ -69,7 +67,9 @@ public class GameManager : MonoBehaviour
 
     private void UpdateUI()
     {
-
+        hudController.UpdateMoneyText(inventory.GetMoney());
+        hudController.UpdateBatteryText(metalDetector.maxBattery);
+        hudController.UpdateInventory();
     }
 
     private void Update()
