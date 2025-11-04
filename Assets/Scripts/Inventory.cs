@@ -58,11 +58,20 @@ public class Inventory : MonoBehaviour
 
     public void IncreaseInventoryCapacity(int increment = 1)
     {
+        if(increment <= 0)
+        {
+            Debug.LogError("Error: Trying to increase inventory by invalid amount: " + increment);
+            return;
+        }
         maxSize += increment;
     }
 
     public ItemData GetItem(int index)
     {
+        if(index < 0 || index >= items.Count)
+        {
+            Debug.LogError("Error: Index out of bounds.");
+        }
         return items[index];
     }
 
