@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6189494663581875946}
   - component: {fileID: 2105909116531319252}
   - component: {fileID: 95141286619121530}
+  - component: {fileID: 4139651853828746116}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -71,7 +72,6 @@ MonoBehaviour:
   musicSource: {fileID: 6189494663581875946}
   sfxSource: {fileID: 95141286619121530}
   fadeSource: {fileID: 6189494663581875946}
-  audioMixerGroup: {fileID: 0}
   audioMixer: {fileID: 24100000, guid: d99d57ad0a890654e884a37e9456af7c, type: 2}
   buttonPressClip: {fileID: 0}
   buttonHoverClip: {fileID: 0}
@@ -310,3 +310,15 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &4139651853828746116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5500071337967560426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ace8005d96cf13e49a4cc44483d93bf6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpawnerManager

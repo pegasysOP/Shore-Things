@@ -8,7 +8,6 @@ public class Shop : MonoBehaviour
     public float range = 3f;
 
     private Keyboard keyboard;
-    public List<Spawner> spawners;
     public MetalDetector metalDetector;
 
     private void Start()
@@ -111,8 +110,8 @@ public class Shop : MonoBehaviour
                 GameManager.Instance.inventory.maxMoney *= 2;
                 Debug.Log(GameManager.Instance.inventory.maxMoney);
                 break;
-
-            case Upgrade.Rarity:
+                
+            /*case Upgrade.Rarity:
                 foreach(Spawner spawner in spawners)
                 {
                     foreach(Item item in spawner.items)
@@ -128,14 +127,9 @@ public class Shop : MonoBehaviour
                         }
                     }
                 }
-                break;
+                break;*/
             case Upgrade.GoldDetector:
-                foreach(Spawner spawner in spawners)
-                {
-                    spawner.canSpawnGold = true;
-                    spawner.ResetSpawns();
-                }
-                
+                SpawnerManager.Instance.EnableGold();
                 break;
 
             case Upgrade.HeartbeatSensor:
@@ -153,11 +147,7 @@ public class Shop : MonoBehaviour
                 metalDetector.rechargeRate = 1f;
                 break;
             case Upgrade.SilverDetector:
-                foreach(Spawner spawner in spawners)
-                {
-                    spawner.canSpawnSilver = true;
-                    spawner.ResetSpawns();
-                }
+                SpawnerManager.Instance.EnableSilver();
                 break;
 
             default:
