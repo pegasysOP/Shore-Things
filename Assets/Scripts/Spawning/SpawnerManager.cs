@@ -21,7 +21,7 @@ public class SpawnerManager : MonoBehaviour
 
     void Start()
     {
-        //FIXME: Manually assign spawners to SpawnerManager at the start
+        //TODO: Manually assign spawners to SpawnerManager at the start
         AssignAllSpawners();
     }
 
@@ -53,6 +53,4 @@ public class SpawnerManager : MonoBehaviour
             spawner.ResetSpawns();
         }
     }
-
-    
 }
