@@ -5,12 +5,12 @@ public class SimpleCameraCircle : MonoBehaviour
     [Header("Orbit Settings")]
     public Transform target;        
     public float radius = 10f;      
-    public float orbitSpeed = 10f; 
+    public float orbitSpeed = 6f; 
 
     [Header("Height Oscillation")]
     public float baseHeight = 2f;   
     public float amplitude = 1f;    
-    public float frequency = 1f;   
+    public float frequency = 0.75f;   
 
     private float angle = 0f;
 
@@ -28,7 +28,7 @@ public class SimpleCameraCircle : MonoBehaviour
         if (target == null) return;
 
         angle += orbitSpeed * Time.deltaTime;
-        if (angle > 360f) angle -= 360f;
+        if (angle > 360f) angle %= 360f;
         float rad = angle * Mathf.Deg2Rad;
 
         float x = Mathf.Cos(rad) * radius;
