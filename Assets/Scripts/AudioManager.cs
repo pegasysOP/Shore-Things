@@ -49,8 +49,6 @@ public class AudioManager : MonoBehaviour
 
     private float seagullDelay = 15f;
     private float seagullTimer = 15f;
-
-
     public enum FadeType { None, FadeIn, CrossFade }
 
     public void Init()
