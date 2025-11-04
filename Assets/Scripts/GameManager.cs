@@ -14,7 +14,6 @@ public class GameManager : MonoBehaviour
     public Inventory inventory;
     public ItemCollection itemCollection;
     public MetalDetector metalDetector;
-    public List<UpgradeData> upgrades = new List<UpgradeData>();
 
     private Keyboard keyboard;
 
@@ -37,32 +36,10 @@ public class GameManager : MonoBehaviour
 
         inventory = FindFirstObjectByType<Inventory>();
         metalDetector = FindFirstObjectByType<MetalDetector>();
-
-        CreateUpgrades();
         
         UpdateUI();
 
         SetLocked(false);
-    }
-
-    private void CreateUpgrades()
-    {
-        upgrades.Add(new UpgradeData { upgrade = Upgrade.Battery, name = "Battery Upgrade", cost = 10f });
-        upgrades.Add(new UpgradeData { upgrade = Upgrade.Recharge, name = "Battery Recharge", cost = 0f });
-        upgrades.Add(new UpgradeData { upgrade = Upgrade.SolarPanel, name = "Solar Recharger", cost = 30f });
-
-        upgrades.Add(new UpgradeData { upgrade = Upgrade.Range, name = "Range Upgrade", cost = 10f });
-        upgrades.Add(new UpgradeData { upgrade = Upgrade.Backpack, name = "Backpack Upgrade", cost = 5f });
-        //upgrades.Add(new UpgradeData { upgrade = Upgrade.WalletSize,        name = "Wallet Size",       cost = 10f });
-        //upgrades.Add(new UpgradeData { upgrade = Upgrade.Rarity,            name = "Rarity Boost",      cost = 25f });
-
-        upgrades.Add(new UpgradeData { upgrade = Upgrade.SilverDetector, name = "Silver Detector", cost = 15f });
-        upgrades.Add(new UpgradeData { upgrade = Upgrade.GoldDetector, name = "Gold Detector", cost = 35f });
-
-        upgrades.Add(new UpgradeData { upgrade = Upgrade.Roomba, name = "For legal reasons not a roomba", cost = 9999f });
-        //upgrades.Add(new UpgradeData { upgrade = Upgrade.HeartbeatSensor,   name = "Heartbeat Sensor",  cost = 1f });
-        //upgrades.Add(new UpgradeData { upgrade = Upgrade.Fossils,           name = "Fossil Finder",     cost = 1f });
-        //upgrades.Add(new UpgradeData { upgrade = Upgrade.AlienTech,         name = "Alien Tech",        cost = 1f });
     }
 
     private void UpdateUI()
@@ -92,17 +69,5 @@ public class GameManager : MonoBehaviour
         LOCKED = locked;
         Cursor.visible = locked;
         Cursor.lockState = locked ? CursorLockMode.None : CursorLockMode.Locked;
-    }
-
-    public void RemoveUpgrade(Upgrade upgradeType)
-    {
-        for (int i = 0; i < upgrades.Count; i++)
-        {
-            if (upgrades[i].upgrade == upgradeType)
-            {
-                upgrades.RemoveAt(i);
-                return;
-            }
-        }
     }
 }
