@@ -47,7 +47,7 @@ public class UpgradeManager : MonoBehaviour
         //upgrades.Add(new UpgradeData { upgrade = Upgrade.AlienTech,         name = "Alien Tech",        cost = 1f });
     }
 
-    //TODO: We probably want to rewrite these one this is event driven. 
+    //TODO: We probably want to rewrite these once this is event driven. 
     public void BuyUpgrade(UpgradeData upgradeData)
     {
         if (GameManager.Instance.inventory.GetMoney() < upgradeData.cost)
