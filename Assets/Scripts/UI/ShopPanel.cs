@@ -36,7 +36,7 @@ public class ShopPanel : MonoBehaviour
     {
         currentShop = shop;  
 
-        foreach (UpgradeData upgradeData in GameManager.Instance.upgrades)
+        foreach (UpgradeData upgradeData in UpgradeManager.Instance.upgrades)
         {
             ShopUpgrade upgradeComponent = Instantiate(upgradeComponentPrefab, upgradeComponentContainer);
             upgradeComponent.Init(upgradeData, OnBuyButtonClick);
@@ -53,7 +53,7 @@ public class ShopPanel : MonoBehaviour
 
         upgradeComponents.Clear();
 
-        foreach (UpgradeData upgradeData in GameManager.Instance.upgrades)
+        foreach (UpgradeData upgradeData in UpgradeManager.Instance.upgrades)
         {
             ShopUpgrade upgradeComponent = Instantiate(upgradeComponentPrefab, upgradeComponentContainer);
             upgradeComponent.Init(upgradeData, OnBuyButtonClick);
@@ -82,7 +82,7 @@ public class ShopPanel : MonoBehaviour
 
     private void OnBuyButtonClick(UpgradeData upgradeData)
     {
-        currentShop.BuyUpgrade(upgradeData);
+        UpgradeManager.Instance.BuyUpgrade(upgradeData);
         RefreshShop();
 
         GameManager.Instance.hudController.UpdateInventory();
