@@ -91,7 +91,7 @@ public class AudioManager : MonoBehaviour
         };
     }
 
-    void AdvanceSong()
+    public void AdvanceSong()
     {
         playlistIndex = (playlistIndex + 1) % playlist.Count;
         PlayCurrentSongInPlaylist();
@@ -130,22 +130,27 @@ public class AudioManager : MonoBehaviour
 
     void PlayCurrentSongInPlaylist()
     {
-        AudioManager.Instance.PlayMusic(playlist[playlistIndex], AudioManager.FadeType.FadeIn, 1f);
+        if(playlist == null || playlist.Count == 0)
+        {
+            Debug.LogError("Playlist empty!");
+        }
+
+        PlayMusic(playlist[playlistIndex], FadeType.FadeIn, 1f);
     }
 
     void StopPlaylist()
     {
-        AudioManager.Instance.Stop(musicSource, true);
+        Stop(musicSource, true);
     }
 
     void PausePlaylist()
     {
-        AudioManager.Instance.musicSource.Pause();
+        musicSource.Pause();
     }
 
     void UnpausePlaylist()
     {
-        AudioManager.Instance.musicSource.UnPause();
+        musicSource.UnPause();
     }
 
     //==================== Utility ====================

@@ -5,9 +5,6 @@ using UnityEngine.InputSystem;
 public class Radio : MonoBehaviour
 {
     private Keyboard keyboard;
-    private int currentSongIndex = 0;
-    private List<AudioClip> playlist;
-    private bool isPlaying = false;
     private bool waitingForStatic = false;
 
     public LayerMask radioMask;
@@ -20,37 +17,41 @@ public class Radio : MonoBehaviour
 
     void Update()
     {
+        HandleSongAdvancing();
+
+        HandleRadioPrompt();
+
+        HandleInput();
+    }
+
+    void HandleSongAdvancing()
+    {
         AudioSource musicSource = AudioManager.Instance.musicSource;
-
-        if (!isPlaying)
-        {
-            isPlaying = true;
-            CreatePlaylist();
-            PlayCurrentSong();
-        }
-
-        if (!musicSource.isPlaying && !waitingForStatic)
-        {
-            AdvanceSong();
-        }
 
         if (waitingForStatic && !musicSource.isPlaying)
         {
             waitingForStatic = false;
-            AdvanceSong();
+            AudioManager.Instance.AdvanceSong();
         }
+    }
 
-        Physics.Raycast(GameManager.Instance.cameraController.playerCamera.transform.position,
-                        GameManager.Instance.cameraController.playerCamera.transform.forward,
-                        out RaycastHit hitInfo, range, radioMask);
-
-        if (hitInfo.collider == null)
+    void HandleRadioPrompt()
+    {
+        if (!Physics.Raycast(
+            GameManager.Instance.cameraController.playerCamera.transform.position,
+            GameManager.Instance.cameraController.playerCamera.transform.forward,
+            out RaycastHit hit, range, radioMask)
+        )
         {
             GameManager.Instance.hudController.ShowRadioPrompt(false);
             return;
         }
-        GameManager.Instance.hudController.ShowRadioPrompt(true);
 
+        GameManager.Instance.hudController.ShowRadioPrompt(true);
+    }
+
+    void HandleInput()
+    {
         if (keyboard.eKey.wasPressedThisFrame)
         {
             PlayStaticThenNextSong();
@@ -59,35 +60,15 @@ public class Radio : MonoBehaviour
 
     void PlayStaticThenNextSong()
     {
+        AudioClip staticClip = AudioManager.Instance.staticClip;
+
         if (AudioManager.Instance.staticClip == null)
         {
-            AdvanceSong();
+            AudioManager.Instance.AdvanceSong();
             return;
         }
 
         waitingForStatic = true;
-        AudioManager.Instance.musicSource.clip = AudioManager.Instance.staticClip;
-        AudioManager.Instance.musicSource.Play();
-    }
-
-    void AdvanceSong()
-    {
-        currentSongIndex = (currentSongIndex + 1) % playlist.Count;
-        PlayCurrentSong();
-    }
-
-    void PlayCurrentSong()
-    {
-        AudioManager.Instance.PlayMusic(playlist[currentSongIndex], AudioManager.FadeType.FadeIn, 1f);
-    }
-
-    void CreatePlaylist()
-    {
-        playlist = new List<AudioClip>()
-        {
-            AudioManager.Instance.hawiiSongClip,
-            AudioManager.Instance.jazzSongClip,
-            AudioManager.Instance.americanaSongClip
-        };
+        AudioManager.Instance.PlayMusic(staticClip, AudioManager.FadeType.None);
     }
 }
