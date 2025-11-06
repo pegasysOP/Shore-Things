@@ -44,15 +44,15 @@ public class Shovel : MonoBehaviour
         // check for item
         if (Physics.Raycast(GameManager.Instance.cameraController.playerCamera.transform.position, GameManager.Instance.cameraController.playerCamera.transform.forward, out RaycastHit hitInfo, range, interactableMask))
         {
-            IInteractable interactable = hitInfo.collider?.GetComponent<IInteractable>();
-            if (interactable != null)
+            ItemObject itemObject = hitInfo.collider?.GetComponent<ItemObject>();
+            if (itemObject != null)
             {
-                interactable.OnInteract();
+                itemObject.OnInteract();
                 return;
             }
             else
             {
-                Debug.LogWarning("Hit an interactable layer object without IInteractable component.");
+                Debug.LogWarning("Hit an interactable layer object without a ItemObject component.");
             }
         }
         
