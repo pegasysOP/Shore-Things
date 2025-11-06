@@ -4,7 +4,6 @@ using UnityEngine;
 public class UpgradeManager : MonoBehaviour
 {
     public static UpgradeManager Instance;
-    public MetalDetector metalDetector;
 
     public List<UpgradeData> upgrades = new List<UpgradeData>();
 
@@ -21,9 +20,6 @@ public class UpgradeManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //TODO: Will we ever have multiple metal detectors? Maybe some upgrades like passive detector could use it? 
-        metalDetector = FindFirstObjectByType<MetalDetector>();
-
         CreateUpgrades();
     }
 
@@ -89,15 +85,15 @@ public class UpgradeManager : MonoBehaviour
         switch (upgrade)
         {
             case Upgrade.Range:
-                metalDetector.range += 2;
+                GameManager.Instance.metalDetector.range += 2;
                 Debug.Log("Range: " + GameManager.Instance.metalDetector.range);
                 break;
             case Upgrade.Battery:
-                metalDetector.maxBattery += 50f;
-                metalDetector.RechargeBattery(metalDetector.maxBattery);
+                GameManager.Instance.metalDetector.maxBattery += 50f;
+                GameManager.Instance.metalDetector.RechargeBattery(GameManager.Instance.metalDetector.maxBattery);
                 break;
             case Upgrade.Recharge:
-                metalDetector.RechargeBattery(metalDetector.maxBattery);
+                GameManager.Instance.metalDetector.RechargeBattery(GameManager.Instance.metalDetector.maxBattery);
                 break;
 
             case Upgrade.Backpack:
@@ -143,7 +139,7 @@ public class UpgradeManager : MonoBehaviour
                 Debug.LogError("Upgrade " + upgrade.ToString() + " is not yet implemented");
                 break;
             case Upgrade.SolarPanel:
-                metalDetector.rechargeRate = 1f;
+                GameManager.Instance.metalDetector.rechargeRate = 1f;
                 break;
             case Upgrade.SilverDetector:
                 SpawnerManager.Instance.EnableSilver();
