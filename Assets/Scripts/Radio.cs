@@ -20,8 +20,6 @@ public class Radio : MonoBehaviour
         HandleSongAdvancing();
 
         HandleRadioPrompt();
-
-        HandleInput();
     }
 
     void HandleSongAdvancing()
@@ -48,6 +46,7 @@ public class Radio : MonoBehaviour
         }
 
         GameManager.Instance.hudController.ShowRadioPrompt(true);
+        HandleInput();
     }
 
     void HandleInput()
