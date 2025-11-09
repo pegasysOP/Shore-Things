@@ -10,12 +10,11 @@ public class CameraController : MonoBehaviour
     public float maxLookAngle;
 
     private float sensitivitySetting = 1f;
-    private Mouse mouse;
+    private InputAction lookAction;
 
     private void Awake()
     {
         sensitivitySetting = SettingsUtils.GetSensitivity();
-        mouse = Mouse.current;
     }
 
     private void Start()
@@ -24,6 +23,7 @@ public class CameraController : MonoBehaviour
             Debug.LogError("WARNING: Duplicate camera controller instances in scene");
 
         GameManager.Instance.cameraController = this;
+        lookAction = InputSystem.actions.FindAction("Look");
     }
 
     private void Update()
@@ -31,10 +31,11 @@ public class CameraController : MonoBehaviour
         if (GameManager.Instance.LOCKED)
             return;
 
-        Vector2 mouseDelta = mouse.delta.ReadValue() * 0.02f; // Scale down to match old Input.GetAxis values
+        Vector2 lookValue = lookAction.ReadValue<Vector2>() * 0.02f;
 
-        yaw = transform.localEulerAngles.y + mouseDelta.x * mouseSensitivity * sensitivitySetting;
-        pitch -= mouseDelta.y * mouseSensitivity * sensitivitySetting;
+        yaw += lookValue.x * mouseSensitivity * sensitivitySetting;
+        pitch -= lookValue.y * mouseSensitivity * sensitivitySetting;
+
         pitch = Mathf.Clamp(pitch, -maxLookAngle, maxLookAngle);
 
         transform.localEulerAngles = new Vector3(0, yaw, 0);
