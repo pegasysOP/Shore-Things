@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed;
     public float moveAcceleration;
     public float maxVelocity;
+    private InputAction jumpAction;
+    private InputAction moveAction;
 
     [Header("Jumping")]
     public GroundDetector groundDetector;
@@ -22,8 +24,6 @@ public class PlayerController : MonoBehaviour
     public float speedDebug;
     public bool groundDebug;
 
-    private Keyboard keyboard;
-
     private float movementTimer = 0.5f;
     private float movementDelay = 0.5f;
 
@@ -33,7 +33,8 @@ public class PlayerController : MonoBehaviour
             Debug.LogError("WARNING: Duplicate player controller instances in scene");
 
         GameManager.Instance.playerController = this;
-        keyboard = Keyboard.current;
+        jumpAction = InputSystem.actions.FindAction("Jump");
+        moveAction = InputSystem.actions.FindAction("Move");
     }
 
     private void Update()
@@ -45,7 +46,13 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if (keyboard != null && keyboard.spaceKey.wasPressedThisFrame && groundDetector.IsGrounded)
+        HandleJumping();
+        HandleMovement();
+    }
+
+    private void HandleJumping()
+    {
+        if (jumpAction.triggered && groundDetector.IsGrounded)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             //animator.SetBool("isJumping", true);
@@ -55,19 +62,12 @@ public class PlayerController : MonoBehaviour
         {
             //animator.SetBool("isJumping", false);
         }
+    }
 
-        float horizontal = 0f;
-        float vertical = 0f;
-
-        if (keyboard != null)
-        {
-            if (keyboard.aKey.isPressed || keyboard.leftArrowKey.isPressed) horizontal = -1f;
-            if (keyboard.dKey.isPressed || keyboard.rightArrowKey.isPressed) horizontal = 1f;
-            if (keyboard.wKey.isPressed || keyboard.upArrowKey.isPressed) vertical = 1f;
-            if (keyboard.sKey.isPressed || keyboard.downArrowKey.isPressed) vertical = -1f;
-        }
-
-        inputDir = new Vector3(horizontal, 0, vertical);
+    private void HandleMovement()
+    {
+        Vector2 moveValue = moveAction.ReadValue<Vector2>();
+        inputDir = new Vector3(moveValue.x, 0, moveValue.y);
     }
 
     private void FixedUpdate()
@@ -90,7 +90,6 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetBool("isMoving", false);
         }
-
 
         float currentAcceleration = groundDetector.IsGrounded ? moveAcceleration : airAcceleration;
         rb.linearVelocity = Vector3.Lerp(rb.linearVelocity, targetVelocity, currentAcceleration * Time.deltaTime);
