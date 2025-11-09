@@ -14,6 +14,8 @@ public class ShopPanel : MonoBehaviour
 
     private Shop currentShop;
 
+    private InputAction interactAction;
+
     private void OnEnable()
     {
         closeButton.onClick.AddListener(CloseShop);
@@ -26,9 +28,14 @@ public class ShopPanel : MonoBehaviour
         sellButton.onClick.RemoveListener(OnSellButtonClick);
     }
 
+    private void Start()
+    {
+        interactAction = InputSystem.actions.FindAction("Interact");
+    }
+
     private void Update()
     {
-        if (Keyboard.current.eKey.wasPressedThisFrame)
+        if (interactAction.triggered)
             CloseShop();
     }
 
