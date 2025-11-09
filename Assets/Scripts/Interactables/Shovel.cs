@@ -11,11 +11,11 @@ public class Shovel : MonoBehaviour
     private float digDelay = 0.3f;
     private float digTimer = 0.3f;
    
-    private Mouse mouse;
+    private InputAction attackAction;
      
     void Start()
     {
-        mouse = Mouse.current;
+        attackAction = InputSystem.actions.FindAction("Attack");
     }
 
     void Update()
@@ -24,7 +24,7 @@ public class Shovel : MonoBehaviour
         if (GameManager.Instance.LOCKED)
             return;
 
-        if (mouse.leftButton.wasPressedThisFrame && digTimer <= 0)
+        if (attackAction.triggered && digTimer <= 0)
         {
             Dig();
             digTimer = digDelay;
