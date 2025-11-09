@@ -7,11 +7,11 @@ public class Shop : MonoBehaviour
     public LayerMask shopMask;
     public float range = 3f;
 
-    private Keyboard keyboard;
+    private InputAction interactAction;
 
     private void Start()
     {
-        keyboard = Keyboard.current;
+        interactAction = InputSystem.actions.FindAction("Interact");
     }
 
     // Update is called once per frame
@@ -33,8 +33,8 @@ public class Shop : MonoBehaviour
 
         GameManager.Instance.hudController.ShowInteractPrompt(true);
 
-        if (keyboard.eKey.wasPressedThisFrame)
-            OpenShop();;
+        if (interactAction.triggered)
+            OpenShop();
     }
 
     private void OpenShop()
