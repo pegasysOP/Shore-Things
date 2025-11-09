@@ -29,12 +29,12 @@ public class MetalDetector : MonoBehaviour
     public Animator animator;
 
     private float beepTimer = 0f;
-    private Mouse mouse;
+    private InputAction shootAction;
     private AudioSource audioSource;
 
     private void Start()
     {
-        mouse = Mouse.current;
+        shootAction = InputSystem.actions.FindAction("Shoot");
         audioSource = GetComponent<AudioSource>();
         audioSource.playOnAwake = false;
         audioSource.clip = metalDetectorBeep;
@@ -52,7 +52,7 @@ public class MetalDetector : MonoBehaviour
         }
             
 
-        if (mouse.rightButton.isPressed)
+        if (shootAction.IsPressed())
         {
             Detect();
         }
