@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 public class Radio : MonoBehaviour
 {
-    private Keyboard keyboard;
+    private InputAction interactAction;
     private bool waitingForStatic = false;
 
     public LayerMask radioMask;
@@ -12,7 +12,7 @@ public class Radio : MonoBehaviour
 
     void Start()
     {
-        keyboard = Keyboard.current;
+        interactAction = InputSystem.actions.FindAction("Interact");
     }
 
     void Update()
@@ -51,7 +51,7 @@ public class Radio : MonoBehaviour
 
     void HandleInput()
     {
-        if (keyboard.eKey.wasPressedThisFrame)
+        if (interactAction.triggered)
         {
             PlayStaticThenNextSong();
         }
