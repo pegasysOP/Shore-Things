@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,7 +16,7 @@ public class GameManager : MonoBehaviour
     public ItemCollection itemCollection;
     public MetalDetector metalDetector;
 
-    private Keyboard keyboard;
+    private InputAction escapeAction; 
 
     public bool LOCKED = false;
 
@@ -31,7 +32,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        keyboard = Keyboard.current;
+        escapeAction = InputSystem.actions.FindAction("Escape");
         audioManager.Init();
 
         inventory = FindFirstObjectByType<Inventory>();
@@ -51,7 +52,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (keyboard.tabKey.wasPressedThisFrame)
+        if (escapeAction.triggered)
         {
             hudController.pauseMenu.Toggle();
         }
